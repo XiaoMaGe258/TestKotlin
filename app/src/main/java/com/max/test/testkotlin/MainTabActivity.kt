@@ -41,7 +41,7 @@ class MainTabActivity : AppCompatActivity() {
             }
             mTabEntities.add(TabEntity(mTitles[i], mIconSelectIds[i], mIconUnSelectIds[i]))
         }
-
+        vp_view_pager.offscreenPageLimit = 3
         vp_view_pager.adapter = MyPagerAdapter(supportFragmentManager)
 
         initTab()
