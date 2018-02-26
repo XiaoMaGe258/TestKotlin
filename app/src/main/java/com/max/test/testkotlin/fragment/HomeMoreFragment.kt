@@ -62,7 +62,9 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
     }
 
     private fun rotateImage(){
-        RotateImageActivity.actionActivity(activity, mPicPath)
+        val intent = Intent(activity, RotateImageActivity::class.java)
+        intent.putExtra("imageUrl", mPicPath)
+        startActivityForResult(intent, 101)
     }
 
     private fun selectPicture(enableCrop: Boolean, enableMultiple: Boolean){
@@ -106,7 +108,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
                 .videoMaxSecond(15)// 显示多少秒以内的视频or音频也可适用 int
                 .videoMinSecond(10)// 显示多少秒以内的视频or音频也可适用 int
 //                .recordVideoSecond()//视频秒数录制 默认60s int
-                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+                .forResult(PictureConfig.CHOOSE_REQUEST)//结果回调onActivityResult code
     }
 
     private fun getSelectModel(enableMultiple: Boolean): Int{
@@ -141,11 +143,21 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
                     }
 
                     mPicPath = picPath
-                    val options = RequestOptions()
-                    options.placeholder(R.mipmap.ic_launcher)
-                    Glide.with(this).load(picPath).apply(options).into(mImgView!!)
+                    setImage()
+                }
+                101 -> {
+                    Log.d("xmg", "########### 1 ##########")
+
+                    mPicPath = data!!.getStringExtra("imgUrl")
+                    setImage()
                 }
             }
         }
+    }
+
+    fun setImage(){
+        val options = RequestOptions()
+        options.placeholder(R.mipmap.ic_launcher)
+        Glide.with(this).load(mPicPath).apply(options).into(mImgView!!)
     }
 }
