@@ -12,8 +12,9 @@ import com.flyco.tablayout.listener.OnTabSelectListener
 import com.flyco.tablayout.utils.UnreadMsgUtils
 import com.flyco.tablayout.widget.MsgView
 import com.max.test.testkotlin.entity.TabEntity
+import com.max.test.testkotlin.fragment.HomeMoreFragment
+import com.max.test.testkotlin.fragment.HomeTabsFragment
 import com.max.test.testkotlin.fragment.SimpleCardFragment
-import com.max.test.testkotlin.fragment.TabsFragment
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import java.util.*
 
@@ -34,9 +35,11 @@ class MainTabActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_tab)
         for (i in mTitles.indices) {
-            if(i == 0){
-                mFragments.add(TabsFragment.getInstance())
-            }else {
+            if(i == 0) {
+                mFragments.add(HomeTabsFragment.getInstance())
+            }else if(i == 3){
+                mFragments.add(HomeMoreFragment.getInstance())
+            } else {
                 mFragments.add(SimpleCardFragment.getInstance("ViewPager " + mTitles[i]))
             }
             mTabEntities.add(TabEntity(mTitles[i], mIconSelectIds[i], mIconUnSelectIds[i]))
