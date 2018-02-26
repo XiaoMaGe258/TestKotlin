@@ -40,7 +40,7 @@ class TabsFragment : Fragment() {
         return v
     }
 
-    inner class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    private inner class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
             return mFragments[position]
