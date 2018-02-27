@@ -14,6 +14,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener
 import com.flyco.tablayout.utils.UnreadMsgUtils
 import com.flyco.tablayout.widget.MsgView
 import com.max.test.testkotlin.entity.TabEntity
+import com.max.test.testkotlin.fragment.HomeMessageFragment
 import com.max.test.testkotlin.fragment.HomeMoreFragment
 import com.max.test.testkotlin.fragment.HomeTabsFragment
 import com.max.test.testkotlin.fragment.SimpleCardFragment
@@ -37,19 +38,18 @@ class MainTabActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_tab)
         for (i in mTitles.indices) {
-            if(i == 0) {
-                mFragments.add(HomeTabsFragment.getInstance())
-            }else if(i == 3){
-                mFragments.add(HomeMoreFragment.getInstance())
-            } else {
-                mFragments.add(SimpleCardFragment.getInstance("ViewPager " + mTitles[i]))
-            }
             mTabEntities.add(TabEntity(mTitles[i], mIconSelectIds[i], mIconUnSelectIds[i]))
         }
+        mFragments.add(HomeTabsFragment.getInstance())
+        mFragments.add(HomeMessageFragment.getInstance())
+        mFragments.add(SimpleCardFragment.getInstance("ViewPager 联系人"))
+        mFragments.add(HomeMoreFragment.getInstance())
+
         vp_view_pager.offscreenPageLimit = 3
         vp_view_pager.adapter = MyPagerAdapter(supportFragmentManager)
 
         initTab()
+
     }
 
     private fun initTab() {

@@ -116,7 +116,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode === RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             when (requestCode) {
                 PictureConfig.CHOOSE_REQUEST -> {
                     // 图片选择结果回调

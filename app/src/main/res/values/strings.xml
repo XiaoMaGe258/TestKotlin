@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Testkotlin</string>
+    <string name="test_text">
+        这只是个占位文字\n\n
+        这只是个占位文字\n\n
+        这只是个占位文字\n\n
+        这只是个占位文字\n\n
+        这只是个占位文字\n\n
+        这只是个占位文字\n\n
+    </string>
 </resources>

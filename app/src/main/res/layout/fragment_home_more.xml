@@ -20,7 +20,7 @@
         android:layout_below="@id/iv_avatar"
         android:layout_marginTop="20dp"
         android:textSize="16sp"
-        android:text="头像"
+        android:text="选择图片"
         />
 
     <Button
