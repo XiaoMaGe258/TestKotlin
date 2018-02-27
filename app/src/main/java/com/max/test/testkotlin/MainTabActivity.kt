@@ -71,7 +71,10 @@ class MainTabActivity : AppCompatActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                tl_tab_view.setCurrentTab(position)
+                tl_tab_view.currentTab = position
+                if(position == 1){
+                    tl_tab_view.hideMsg(1)
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -80,12 +83,12 @@ class MainTabActivity : AppCompatActivity() {
         })
 
 
-        tl_tab_view.showMsg(0, 999)
-        tl_tab_view.showMsg(1, 999)
-        tl_tab_view.showMsg(2, 999)
+//        tl_tab_view.showMsg(0, 3)
+        tl_tab_view.showMsg(1, 10)
+//        tl_tab_view.showMsg(2, 999)
         tl_tab_view.setMsgMargin(2, -10f, 0f)
-        val msgView1: MsgView = tl_tab_view.getMsgView(1)
-        msgView1.backgroundColor = Color.parseColor("#3355aa")
+//        val msgView1: MsgView = tl_tab_view.getMsgView(1)
+//        msgView1.backgroundColor = Color.parseColor("#3355aa")
         tl_tab_view.showDot(3)
         val msgView3 = tl_tab_view.getMsgView(3)
         if (msgView3 != null) {
@@ -94,7 +97,7 @@ class MainTabActivity : AppCompatActivity() {
     }
 
     private fun dp2px(dp: Float): Int {
-        val scale = getResources().getDisplayMetrics().density
+        val scale = resources.displayMetrics.density
         return (dp * scale + 0.5f).toInt()
     }
 

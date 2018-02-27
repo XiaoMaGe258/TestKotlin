@@ -2,11 +2,11 @@ package com.max.test.testkotlin.fragment
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -20,23 +20,22 @@ import com.youth.banner.loader.ImageLoader
 import kotlinx.android.synthetic.main.fragment_home_message.view.*
 import kotlin.collections.ArrayList
 import android.support.v7.widget.RecyclerView
-//import sun.swing.SwingUtilities2.drawRect
-//import com.sun.deploy.ui.CacheUpdateProgressDialog.dismiss
-import com.max.test.testkotlin.fragment.HomeMessageFragment.HomeItem
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.scwang.smartrefresh.header.MaterialHeader
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener
+import java.util.*
 
 
-
-
-
-
-
-class HomeMessageFragment : Fragment() {
+class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
 
     private val mImages = ArrayList<String>()
     private val mListItems = ArrayList<HomeItem>()
     private var mAdapter: HomeAdapter? = null
+    private var mRefreshLayout: RefreshLayout? = null
     companion object {
         fun getInstance(): HomeMessageFragment {
             return HomeMessageFragment()
@@ -73,6 +72,14 @@ class HomeMessageFragment : Fragment() {
 
 
     private fun initList(v: View){
+        mRefreshLayout = v.srl_refresh_layout
+        v.srl_refresh_layout.refreshHeader = MaterialHeader(context)
+        v.srl_refresh_layout.refreshFooter = ClassicsFooter(context)
+        v.srl_refresh_layout.setEnableHeaderTranslationContent(false)
+        v.srl_refresh_layout.isEnableOverScrollBounce = false
+        v.srl_refresh_layout.setOnRefreshListener(this)
+        v.srl_refresh_layout.setOnLoadmoreListener(this)
+
         v.rv_list.isNestedScrollingEnabled = false//用NestedScrollView替代ScrollView，解决滑动黏连问题
         v.rv_list.layoutManager = LinearLayoutManager(context)
         v.rv_list.addItemDecoration(MySimpleDivider(context!!))
@@ -82,6 +89,15 @@ class HomeMessageFragment : Fragment() {
         //每次都显示动画
         mAdapter!!.isFirstOnly(false)
         v.rv_list.adapter = mAdapter!!
+
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout?) {
+        getData(true)
+    }
+
+    override fun onLoadmore(refreshLayout: RefreshLayout?) {
+        getData(false)
     }
 
     private fun getData(isRefreshing: Boolean) {
@@ -91,51 +107,49 @@ class HomeMessageFragment : Fragment() {
                     mListItems.clear()
                 }
                 for(i in 0 until 10){
-                    mListItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字"+i))
+                    mListItems.add(getRandomHomeItem())
                 }
 
                 mAdapter!!.notifyDataSetChanged()
-//                mPull2RefreshLayout.finishRefresh(true)
-//                mPull2RefreshLayout.finishLoadmore(true)
-//                if (mDialog != null) {
-//                    mDialog.dismiss()
-//                }
-            }, 2000)
+                mRefreshLayout!!.finishRefresh(true)
+                mRefreshLayout!!.finishLoadmore(true)
+            }, 1000)
     }
 
-    inner class HomeItem {
-        var title: String? = null
-        var imageResource: Int = 0
-
-        constructor() {}
-        constructor(imgId: Int, title: String) {
-            this.imageResource = imgId
-            this.title = title
-        }
+    inner class HomeItem(imgId: Int, title: String, number: Int, flag: String) {
+        var title: String? = title
+        var imageResource: Int = imgId
+        var num: Int = number
+        var flag: String = flag
     }
 
     inner class HomeAdapter(layoutResId: Int, data: List<HomeItem>) : BaseQuickAdapter<HomeItem, BaseViewHolder>(layoutResId, data) {
 
         override fun convert(helper: BaseViewHolder, item: HomeItem) {
-            helper.setText(R.id.tv_tab, item.title)
-            helper.setImageResource(R.id.img_tab, item.imageResource)
+            helper.setText(R.id.tv_from_flag, item.flag)
+            helper.setText(R.id.tv_title, item.title)
+            helper.setText(R.id.tv_num, ""+item.num+"条评论")
+            helper.setImageResource(R.id.iv_img, item.imageResource)
         }
     }
 
     private inner class MySimpleDivider : RecyclerView.ItemDecoration {
 
+        //分割线的高度。默认没有
         private var dividerHeight: Int = 0
         private var dividerPaint: Paint? = null
 
         constructor(context: Context) {
+            //默认分割线高度为1dp
             this.dividerPaint = Paint()
-            this.dividerPaint!!.setColor(context.resources.getColor(R.color.colorPrimary))
+            this.dividerPaint!!.color = Color.parseColor("#CCCCCC")
             this.dividerHeight = dip2px(context, 1f)
         }
 
         constructor(context: Context, colorId: Int, dividerHeight: Int) {
+            //自定义分割线高度，颜色
             this.dividerPaint = Paint()
-            this.dividerPaint!!.setColor(context.resources.getColor(colorId))
+            this.dividerPaint!!.color = context.resources.getColor(colorId)
             this.dividerHeight = dip2px(context, dividerHeight.toFloat())
         }
 
@@ -162,6 +176,44 @@ class HomeMessageFragment : Fragment() {
             val scale = context.resources.displayMetrics.density
             return (dipValue * scale + 0.5f).toInt()
         }
+    }
+
+    private val newsTitleArray = arrayOf(
+            "愤怒的小鸟竟然真的存在！模样实在是萌化了",
+            "男子花300元买的哈士奇，结果越长越奇怪......这是大师兄吧！",
+            "小羊认为自己是一只狗 每日要遛还能吃狗粮",
+            "上交寒假作业把老师气得直冒火？同学，鸡毛掸子了解下？",
+            "陆客潮退了台游客露“本性” 大陆终于不用背锅了"
+    )
+
+    private val newsIconArray = arrayOf(
+            R.drawable.ic_news1,
+            R.drawable.ic_news2,
+            R.drawable.ic_news3,
+            R.drawable.ic_news4,
+            R.drawable.ic_news5
+    )
+
+    private val newsNumArray = arrayOf(
+            1343,
+            1985,
+            2287,
+            1358,
+            991
+    )
+
+    private val newsFlagArray = arrayOf(
+            "摄影",
+            "宠物",
+            "宠物",
+            "社会",
+            "旅游"
+    )
+
+    private fun getRandomHomeItem(): HomeItem{
+        var random = Random()
+        var index = random.nextInt(5)
+        return HomeItem(newsIconArray[index], newsTitleArray[index], newsNumArray[index], newsFlagArray[index])
     }
 
 }

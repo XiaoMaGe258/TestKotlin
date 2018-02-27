@@ -1,20 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <ImageView
-        android:id="@+id/img_tab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:id="@+id/iv_img"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_news1" />
 
     <TextView
-        android:id="@+id/tv_tab"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="#ff0000" />
+        android:layout_alignTop="@id/iv_img"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/iv_img"
+        android:text=""
+        android:textColor="#404040"
+        />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_from_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_img"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/iv_img"
+        android:background="@drawable/button_stroke_round_bg"
+        android:textSize="12sp"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text=""
+        android:includeFontPadding="false"
+        android:textColor="#41BAAD"/>
+
+    <TextView
+        android:id="@+id/tv_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_from_flag"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/tv_from_flag"
+        android:textSize="12sp"
+        android:text="环球纪事网"
+        android:textColor="#999999"/>
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_from"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/tv_from"
+        android:textSize="12sp"
+        android:text="0评论"
+        android:textColor="#999999"/>
+
+
+</RelativeLayout>
