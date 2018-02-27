@@ -1,7 +1,6 @@
 package com.max.test.testkotlin.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -17,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -38,10 +38,12 @@ public class RotateImageActivity extends AppCompatActivity implements View.OnCli
     private Bitmap mTarBitmap;
     private String mTarImgUrl;
 
+    public static final int RequestCode = 101;
+
     public static void actionActivity(Activity fromActivity, String imageUrl){
         Intent intent = new Intent(fromActivity, RotateImageActivity.class);
         intent.putExtra("imageUrl", imageUrl);
-        fromActivity.startActivityForResult(intent, 100);
+        fromActivity.startActivityForResult(intent, RequestCode);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class RotateImageActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rotate_image);
         mTarImgUrl = getIntent().getStringExtra("imageUrl");
-        mTarBitmap = getIntent().getParcelableExtra("bitmap");
+
         initView();
     }
 
@@ -60,6 +62,8 @@ public class RotateImageActivity extends AppCompatActivity implements View.OnCli
 
         RequestOptions options = new RequestOptions();
         options.placeholder(R.mipmap.ic_launcher);
+        options.skipMemoryCache(true);
+        options.diskCacheStrategy(DiskCacheStrategy.NONE);
         Glide.with(this).load(mTarImgUrl).apply(options).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource,
@@ -113,7 +117,8 @@ public class RotateImageActivity extends AppCompatActivity implements View.OnCli
         if (!appDir.exists()) {
             appDir.mkdir();
         }
-        String fileName = System.currentTimeMillis() + ".jpg";
+//        String fileName = System.currentTimeMillis() + ".jpg";
+        String fileName = "tempPicture.jpg";
         File file = new File(appDir, fileName);
         if (file.exists()) {
             file.delete();
@@ -126,7 +131,6 @@ public class RotateImageActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return file.getAbsolutePath();
     }
 }

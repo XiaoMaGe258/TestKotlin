@@ -2,21 +2,16 @@ package com.max.test.testkotlin.fragment;
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -64,7 +59,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
     private fun rotateImage(){
         val intent = Intent(activity, RotateImageActivity::class.java)
         intent.putExtra("imageUrl", mPicPath)
-        startActivityForResult(intent, 101)
+        startActivityForResult(intent, RotateImageActivity.RequestCode)
     }
 
     private fun selectPicture(enableCrop: Boolean, enableMultiple: Boolean){
@@ -134,20 +129,16 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
 
                     val picObj = selectList[0]
                     var picPath = ""
-                    if(picObj.isCut){
-                        picPath = picObj.cutPath
-                    }else if(picObj.isCompressed){
-                        picPath = picObj.compressPath
-                    }else{
-                        picPath = picObj.path
+                    when {
+                        picObj.isCut -> picPath = picObj.cutPath
+                        picObj.isCompressed -> picPath = picObj.compressPath
+                        else -> picPath = picObj.path
                     }
 
                     mPicPath = picPath
                     setImage()
                 }
-                101 -> {
-                    Log.d("xmg", "########### 1 ##########")
-
+                RotateImageActivity.RequestCode -> {
                     mPicPath = data!!.getStringExtra("imgUrl")
                     setImage()
                 }
@@ -155,9 +146,10 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun setImage(){
+    private fun setImage(){
         val options = RequestOptions()
-        options.placeholder(R.mipmap.ic_launcher)
+        options.skipMemoryCache(true)
+        options.diskCacheStrategy(DiskCacheStrategy.NONE)
         Glide.with(this).load(mPicPath).apply(options).into(mImgView!!)
     }
 }
