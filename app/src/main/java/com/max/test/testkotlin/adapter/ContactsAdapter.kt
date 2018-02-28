@@ -1,5 +1,6 @@
 package com.max.test.testkotlin.adapter
 
+import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.TextView
 
 import com.max.test.testkotlin.R
 import com.max.test.testkotlin.entity.Contact
+import java.util.*
 
 class ContactsAdapter(contacts: ArrayList<Contact>, private var layoutId: Int):
         RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>() {
@@ -37,6 +39,13 @@ class ContactsAdapter(contacts: ArrayList<Contact>, private var layoutId: Int):
             holder.tvIndex!!.visibility = View.GONE
         }
         holder.tvName!!.text = contact.name
+        holder.ivAvatar!!.setBackgroundResource(getAvatar())
+    }
+
+    private val avatarArray = arrayOf(R.drawable.ic_avatar_0, R.drawable.ic_avatar_1,R.drawable.ic_avatar_no)
+    private fun getAvatar(): Int{
+        val index = Random().nextInt(3)
+        return avatarArray[index]
     }
 
     inner class ContactsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -1,6 +1,7 @@
 package com.max.test.testkotlin.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -22,6 +23,8 @@ import kotlin.collections.ArrayList
 import android.support.v7.widget.RecyclerView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.max.test.testkotlin.ui.RotateImageActivity
+import com.max.test.testkotlin.ui.WebViewActivity
 import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
@@ -30,7 +33,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import java.util.*
 
 
-class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
+class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener, BaseQuickAdapter.OnItemClickListener {
 
     private val mImages = ArrayList<String>()
     private val mListItems = ArrayList<HomeItem>()
@@ -55,10 +58,7 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
     }
 
     private fun initBanner(v: View){
-        mImages.add("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1266198176,1144251370&fm=200&gp=0.jpg")
-        mImages.add("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1597558927,1189009039&fm=27&gp=0.jpg")
-        mImages.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=766806198,3110259661&fm=27&gp=0.jpg")
-
+        addBannerData()
         v.bn_banner.setImageLoader(GlideImageLoader())
         v.bn_banner.setImages(mImages)
         v.bn_banner.start()
@@ -89,7 +89,13 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
         //每次都显示动画
         mAdapter!!.isFirstOnly(false)
         v.rv_list.adapter = mAdapter!!
+        mAdapter!!.onItemClickListener = this
+    }
 
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
+        val intent = Intent(activity, WebViewActivity::class.java)
+        intent.putExtra("url", mListItems[position].contentUrl)
+        startActivity(intent)
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout?) {
@@ -116,11 +122,12 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
             }, 1000)
     }
 
-    inner class HomeItem(imgId: Int, title: String, number: Int, flag: String) {
+    inner class HomeItem(imgId: Int, title: String, number: Int, flag: String, contentUrl: String) {
         var title: String? = title
         var imageResource: Int = imgId
         var num: Int = number
         var flag: String = flag
+        var contentUrl: String = contentUrl
     }
 
     inner class HomeAdapter(layoutResId: Int, data: List<HomeItem>) : BaseQuickAdapter<HomeItem, BaseViewHolder>(layoutResId, data) {
@@ -186,6 +193,14 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
             "陆客潮退了台游客露“本性” 大陆终于不用背锅了"
     )
 
+    private val newsContentArray = arrayOf(
+            "https://m.huanqiu.com/r/MV8wXzExNjI3MDQ0XzUzXzE1MTk3MTUxMDA=?tt_group_id=6527127919154692612",
+            "https://www.toutiao.com/a6527071495796032007/",
+            "http://t.m.youth.cn/transfer/toutiao/url/d.youth.cn/shrgch/201802/t20180227_11446697.htm?tt_group_id=6527024557486768654",
+            "https://www.toutiao.com/a6527112758545089037/",
+            "http://m.haiwainet.cn/ttc/345658/2018/0223/content_31263923_1.html?s=toutiao&tt_group_id=6525691103755108878"
+    )
+
     private val newsIconArray = arrayOf(
             R.drawable.ic_news1,
             R.drawable.ic_news2,
@@ -211,9 +226,15 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
     )
 
     private fun getRandomHomeItem(): HomeItem{
-        var random = Random()
-        var index = random.nextInt(5)
-        return HomeItem(newsIconArray[index], newsTitleArray[index], newsNumArray[index], newsFlagArray[index])
+        val random = Random()
+        val index = random.nextInt(5)
+        return HomeItem(newsIconArray[index], newsTitleArray[index], newsNumArray[index],
+                newsFlagArray[index], newsContentArray[index])
     }
 
+    private fun addBannerData(){
+        mImages.add("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1266198176,1144251370&fm=200&gp=0.jpg")
+        mImages.add("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1597558927,1189009039&fm=27&gp=0.jpg")
+        mImages.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=766806198,3110259661&fm=27&gp=0.jpg")
+    }
 }
