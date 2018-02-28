@@ -12,9 +12,6 @@ import com.max.test.testkotlin.entity.Contact;
 
 import java.util.List;
 
-/**
- * Created by gjz on 9/4/16.
- */
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
 
     private List<Contact> contacts;
