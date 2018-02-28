@@ -1,23 +1,19 @@
 package com.max.test.testkotlin
 
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.flyco.tablayout.listener.CustomTabEntity
 import com.flyco.tablayout.listener.OnTabSelectListener
 import com.flyco.tablayout.utils.UnreadMsgUtils
-import com.flyco.tablayout.widget.MsgView
 import com.max.test.testkotlin.entity.TabEntity
+import com.max.test.testkotlin.fragment.HomeContactsFragment
 import com.max.test.testkotlin.fragment.HomeMessageFragment
 import com.max.test.testkotlin.fragment.HomeMoreFragment
 import com.max.test.testkotlin.fragment.HomeTabsFragment
-import com.max.test.testkotlin.fragment.SimpleCardFragment
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import java.util.*
 
@@ -40,9 +36,10 @@ class MainTabActivity : AppCompatActivity() {
         for (i in mTitles.indices) {
             mTabEntities.add(TabEntity(mTitles[i], mIconSelectIds[i], mIconUnSelectIds[i]))
         }
+
         mFragments.add(HomeTabsFragment.getInstance())
         mFragments.add(HomeMessageFragment.getInstance())
-        mFragments.add(SimpleCardFragment.getInstance("ViewPager 联系人"))
+        mFragments.add(HomeContactsFragment.getInstance())
         mFragments.add(HomeMoreFragment.getInstance())
 
         vp_view_pager.offscreenPageLimit = 3

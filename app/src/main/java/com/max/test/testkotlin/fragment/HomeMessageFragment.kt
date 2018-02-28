@@ -83,7 +83,7 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener {
         v.rv_list.isNestedScrollingEnabled = false//用NestedScrollView替代ScrollView，解决滑动黏连问题
         v.rv_list.layoutManager = LinearLayoutManager(context)
         v.rv_list.addItemDecoration(MySimpleDivider(context!!))
-        mAdapter = HomeAdapter(R.layout.message_item, mListItems)
+        mAdapter = HomeAdapter(R.layout.item_message, mListItems)
         //设置动画
         mAdapter!!.openLoadAnimation(BaseQuickAdapter.ALPHAIN)
         //每次都显示动画
