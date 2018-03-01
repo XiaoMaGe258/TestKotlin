@@ -17,6 +17,7 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.max.test.testkotlin.R
 import com.max.test.testkotlin.ui.RotateImageActivity
+import com.max.test.testkotlin.utils.MyToast
 import kotlinx.android.synthetic.main.fragment_home_more.view.*
 
 
@@ -38,20 +39,32 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         mImgView = v.iv_avatar
         mImgView!!.setOnClickListener(this)
         v.btn_view_image.setOnClickListener(this)
+        v.ib_more_item1.setOnClickListener(this)
+        v.ib_more_item2.setOnClickListener(this)
+        v.ib_more_item3.setOnClickListener(this)
         return v
     }
 
     override fun onClick(v: View) {
         when(v){
-            v!!.iv_avatar ->
+            v.iv_avatar ->
                 selectPicture(false, false)
-            v!!.btn_view_image -> {
+            v.btn_view_image -> {
                 if(mPicPath == null) {
                     Toast.makeText(context, "先选择图片", Toast.LENGTH_SHORT).show()
                     return
                 }else{
                     rotateImage()
                 }
+            }
+            v.ib_more_item1 -> {
+
+            }
+            v.ib_more_item2 -> {
+                MyToast.show(context, "别想了，不可能的")
+            }
+            v.ib_more_item3 -> {
+                MyToast.show(context, "净想美事呢")
             }
         }
     }

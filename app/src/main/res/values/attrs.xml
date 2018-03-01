@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ItemBar">
+        <attr name="itemTitle" format="string" />
+        <attr name="itemTitleColor" format="color|reference" />
+        <attr name="itemContent" format="string" />
+        <attr name="itemContentColor" format="color|reference" />
+        <attr name="itemHint" format="string" />
+        <attr name="itemHintColor" format="color|reference" />
+        <attr name="itemIcon" format="reference" />
+        <attr name="showRightFlag" format="boolean" />
+    </declare-styleable>
+</resources>
