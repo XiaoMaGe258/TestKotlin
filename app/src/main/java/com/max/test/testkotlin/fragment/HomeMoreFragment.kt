@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,15 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.max.test.testkotlin.R
+import com.max.test.testkotlin.R.id.cv_calendar
 import com.max.test.testkotlin.ui.RotateImageActivity
 import com.max.test.testkotlin.utils.MyToast
+import com.max.test.testkotlin.utils.SignSelectorDecorator
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.android.synthetic.main.fragment_home_more.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -42,6 +49,8 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         v.ib_more_item1.setOnClickListener(this)
         v.ib_more_item2.setOnClickListener(this)
         v.ib_more_item3.setOnClickListener(this)
+
+        initCalendarDate()
         return v
     }
 
@@ -58,7 +67,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
                 }
             }
             v.ib_more_item1 -> {
-
+                showWorkDateDatePicker()
             }
             v.ib_more_item2 -> {
                 MyToast.show(context, "别想了，不可能的")
@@ -164,5 +173,47 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         options.skipMemoryCache(true)
         options.diskCacheStrategy(DiskCacheStrategy.NONE)
         Glide.with(this).load(mPicPath).apply(options).into(mImgView!!)
+    }
+
+    private var mCalendarDialog: AlertDialog? = null
+    private var mDialogView: View? = null
+    private var mCalendarView: MaterialCalendarView? = null
+    private var mDecorator: SignSelectorDecorator? = null
+    private fun initCalendarDate() {
+        mDecorator = SignSelectorDecorator(activity)
+        mDialogView = LayoutInflater.from(context).inflate(R.layout.calendar_dialog_layout, null)
+        mCalendarView = mDialogView!!.findViewById(cv_calendar)
+        mCalendarView!!.setTitleFormatter { day ->
+            val dateFormat = SimpleDateFormat("yyyy年MM月", Locale.getDefault())
+            dateFormat.format(day.date)
+        }
+        mCalendarView!!.setWeekDayLabels(arrayOf("日", "一", "二", "三", "四", "五", "六"))
+        mCalendarDialog = AlertDialog.Builder(context!!).setView(mDialogView).create()
+
+    }
+
+    private fun showWorkDateDatePicker() {
+        val maxDays = 0
+        mCalendarView!!.setOnDateChangedListener { widget, date, selected ->
+//            mCalendarDialog!!.dismiss()
+            mDecorator!!.setDate(Date())
+            widget.invalidateDecorators()
+        }
+        mCalendarView!!.showOtherDates = MaterialCalendarView.SHOW_OTHER_MONTHS
+
+        mCalendarView!!.clearSelection()
+        mCalendarView!!.addDecorator(mDecorator)
+
+
+        val minTime = Calendar.getInstance()
+        val maxTime = Calendar.getInstance()
+        maxTime.time = Date()
+        maxTime.set(Calendar.DAY_OF_MONTH, maxTime.get(Calendar.DAY_OF_MONTH) + maxDays)
+        mCalendarView!!.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setMinimumDate(CalendarDay.from(minTime.time))
+                .setMaximumDate(CalendarDay.from(maxTime.time))
+                .commit()
+        mCalendarDialog!!.show()
     }
 }

@@ -34,4 +34,5 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'//https://github.com/scwang90/SmartRefreshLayout
     implementation 'com.gjiazhe:wavesidebar:1.3'//https://github.com/gjiazhe/WaveSideBar
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'//https://github.com/prolificinteractive/material-calendarview
 }
