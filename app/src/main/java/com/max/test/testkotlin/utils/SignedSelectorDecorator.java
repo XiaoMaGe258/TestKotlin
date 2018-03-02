@@ -10,23 +10,36 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * 签到详情日历，点选效果
+ * 签到详情日历，已签效果
  */
-public class SignSelectorDecorator implements DayViewDecorator {
+public class SignedSelectorDecorator implements DayViewDecorator {
 
-    private CalendarDay date;
+    private ArrayList<CalendarDay> dateArray;
     private final Drawable drawable;
 
-    public SignSelectorDecorator(Activity context) {
+    public SignedSelectorDecorator(Activity context, ArrayList<CalendarDay> date) {
         drawable = context.getResources().getDrawable(R.drawable.ic_signed12);
+        this.dateArray = date;
     }
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return date != null && day.equals(date);
+        return dateArray != null && hasDate(day);
+    }
+
+    private boolean hasDate(CalendarDay day){
+        for(CalendarDay date : dateArray){
+            String dateStr = ""+date.getYear()+date.getMonth()+date.getDay();
+            String dayStr = ""+day.getYear()+day.getMonth()+day.getDay();
+            if(dateStr.equals(dayStr)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -38,12 +51,4 @@ public class SignSelectorDecorator implements DayViewDecorator {
         view.setSelectionDrawable(drawable);
     }
 
-    //从外面传进来目标日期
-    public void setDate(Date date) {
-        this.date = CalendarDay.from(date);
-    }
-
-    public CalendarDay getDate(){
-        return date;
-    }
 }

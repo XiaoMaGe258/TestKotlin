@@ -2,6 +2,7 @@ package com.max.test.testkotlin.fragment;
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -21,20 +23,25 @@ import com.max.test.testkotlin.R.id.cv_calendar
 import com.max.test.testkotlin.ui.RotateImageActivity
 import com.max.test.testkotlin.utils.MyToast
 import com.max.test.testkotlin.utils.SignSelectorDecorator
+import com.max.test.testkotlin.utils.SignedSelectorDecorator
+import com.max.test.testkotlin.view.ItemBar
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.android.synthetic.main.fragment_home_more.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
  * 更多
  * */
-class HomeMoreFragment : Fragment(), View.OnClickListener {
+class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSweetClickListener {
 
     var mImgView: ImageView? = null
     var mPicPath: String? = null
+    var mIBSignItem: ItemBar? = null
+
     companion object {
         fun getInstance(): HomeMoreFragment {
             return HomeMoreFragment()
@@ -49,20 +56,20 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         v.ib_more_item1.setOnClickListener(this)
         v.ib_more_item2.setOnClickListener(this)
         v.ib_more_item3.setOnClickListener(this)
-
+        mIBSignItem = v.ib_more_item1
         initCalendarDate()
         return v
     }
 
     override fun onClick(v: View) {
-        when(v){
+        when (v) {
             v.iv_avatar ->
                 selectPicture(false, false)
             v.btn_view_image -> {
-                if(mPicPath == null) {
+                if (mPicPath == null) {
                     Toast.makeText(context, "先选择图片", Toast.LENGTH_SHORT).show()
                     return
-                }else{
+                } else {
                     rotateImage()
                 }
             }
@@ -78,13 +85,13 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun rotateImage(){
+    private fun rotateImage() {
         val intent = Intent(activity, RotateImageActivity::class.java)
         intent.putExtra("imageUrl", mPicPath)
         startActivityForResult(intent, RotateImageActivity.RequestCode)
     }
 
-    private fun selectPicture(enableCrop: Boolean, enableMultiple: Boolean){
+    private fun selectPicture(enableCrop: Boolean, enableMultiple: Boolean) {
 
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
@@ -128,10 +135,10 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
                 .forResult(PictureConfig.CHOOSE_REQUEST)//结果回调onActivityResult code
     }
 
-    private fun getSelectModel(enableMultiple: Boolean): Int{
-        if(enableMultiple){
+    private fun getSelectModel(enableMultiple: Boolean): Int {
+        if (enableMultiple) {
             return PictureConfig.MULTIPLE
-        }else{
+        } else {
             return PictureConfig.SINGLE
         }
     }
@@ -168,7 +175,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun setImage(){
+    private fun setImage() {
         val options = RequestOptions()
         options.skipMemoryCache(true)
         options.diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -179,6 +186,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
     private var mDialogView: View? = null
     private var mCalendarView: MaterialCalendarView? = null
     private var mDecorator: SignSelectorDecorator? = null
+    private val mSignedDecoratorArray = ArrayList<CalendarDay>()
     private fun initCalendarDate() {
         mDecorator = SignSelectorDecorator(activity)
         mDialogView = LayoutInflater.from(context).inflate(R.layout.calendar_dialog_layout, null)
@@ -189,15 +197,37 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
         }
         mCalendarView!!.setWeekDayLabels(arrayOf("日", "一", "二", "三", "四", "五", "六"))
         mCalendarDialog = AlertDialog.Builder(context!!).setView(mDialogView).create()
-
+        val beforeDay = Calendar.getInstance()
+        for (i in 0 until 3) {
+            beforeDay.set(Calendar.DAY_OF_MONTH, beforeDay.get(Calendar.DAY_OF_MONTH) - 1)
+            mSignedDecoratorArray.add(CalendarDay.from(beforeDay))
+        }
+        val signedDecorator = SignedSelectorDecorator(activity, mSignedDecoratorArray)
+        mCalendarView!!.addDecorator(signedDecorator)
     }
 
     private fun showWorkDateDatePicker() {
-        val maxDays = 0
+        val maxDays = 0 //最多显示可点日期 0当日 1次日 ...
         mCalendarView!!.setOnDateChangedListener { widget, date, selected ->
-//            mCalendarDialog!!.dismiss()
+            if(mDecorator!!.date != null){
+                val alert = SweetAlertDialog(activity!!, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("哎？")
+                        .setContentText("今天你不是已经签过到了吗？")
+                        .setConfirmButton("这样啊", this)
+                alert.setCanceledOnTouchOutside(false)
+                alert.setCancelable(false)
+                alert.show()
+                return@setOnDateChangedListener
+            }
             mDecorator!!.setDate(Date())
             widget.invalidateDecorators()
+
+            val dialog = SweetAlertDialog(activity, SweetAlertDialog.SUCCESS_TYPE)
+                    .setContentText("签到成功，长此以往，必将走上人生巅峰")
+                    .setConfirmButton("没问题", this)
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.setCancelable(false)
+            dialog.show()
         }
         mCalendarView!!.showOtherDates = MaterialCalendarView.SHOW_OTHER_MONTHS
 
@@ -216,4 +246,19 @@ class HomeMoreFragment : Fragment(), View.OnClickListener {
                 .commit()
         mCalendarDialog!!.show()
     }
+
+    override fun onClick(sweetAlertDialog: SweetAlertDialog?) {
+        when(sweetAlertDialog!!.alerType){
+            SweetAlertDialog.SUCCESS_TYPE -> {
+                mCalendarDialog!!.dismiss()
+                sweetAlertDialog!!.dismissWithAnimation()
+                mIBSignItem!!.setHint("今天已经签到", Color.parseColor("#999999"))
+            }
+            SweetAlertDialog.WARNING_TYPE -> {
+                sweetAlertDialog!!.dismiss()
+            }
+        }
+
+    }
+
 }

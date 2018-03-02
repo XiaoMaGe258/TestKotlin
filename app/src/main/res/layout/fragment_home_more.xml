@@ -50,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             app:itemHint="今天未签到"
+            app:itemHintColor="#ff5555"
             app:itemIcon="@drawable/ic_money"
             app:itemTitle="签到领红包" />
 
