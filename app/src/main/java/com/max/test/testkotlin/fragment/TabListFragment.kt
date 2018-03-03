@@ -26,14 +26,17 @@ import java.util.ArrayList
 
 class TabListFragment: Fragment(), OnRefreshListener, OnLoadmoreListener {
 
-    var mPull2RefreshLayout: SmartRefreshLayout? = null
-    var mListView: RecyclerView? = null
+    private var mPull2RefreshLayout: SmartRefreshLayout? = null
+    private var mListView: RecyclerView? = null
+    private var mTitle: String = "标题"
     private val mItems = ArrayList<HomeItem>()
     private var mAdapter: HomeAdapter? = null
 
     companion object {
-        fun getInstance(): TabListFragment {
-            return TabListFragment()
+        fun getInstance(title: String): TabListFragment {
+            val sf = TabListFragment()
+            sf.mTitle = title
+            return sf
         }
     }
 
@@ -58,12 +61,15 @@ class TabListFragment: Fragment(), OnRefreshListener, OnLoadmoreListener {
         mListView!!.addItemDecoration(MySimpleDivider(context!!))
         mAdapter = HomeAdapter(R.layout.tab_list_item, mItems)
         //设置动画
-        mAdapter!!.openLoadAnimation(BaseQuickAdapter.SCALEIN)
+//        mAdapter!!.openLoadAnimation(BaseQuickAdapter.ALPHAIN)
         //每次都显示动画
         mAdapter!!.isFirstOnly(false)
         mListView!!.adapter = mAdapter
     }
 
+    /**
+     * 参数初始化，传就是赋值，不传就默认2000
+     */
     private fun getData(isRefreshing: Boolean, delayedTime: Long = 2000) {
 
         Handler().postDelayed(object: Runnable {
@@ -71,17 +77,17 @@ class TabListFragment: Fragment(), OnRefreshListener, OnLoadmoreListener {
                 if (isRefreshing) {
                     mItems.clear()
                 }
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字0", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字1", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字2", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字3", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字4", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字5", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字6", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字7", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字8", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字9", "名字很长很长很长很长很长很长很长很长"))
-                mItems.add(HomeItem(R.mipmap.ic_launcher, "你的名字10", "名字很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长"))
+                mItems.add(HomeItem(R.mipmap.ic_launcher, mTitle, mTitle+"内容很长很长很长很长很长很长很长很长很长"))
                 mAdapter!!.notifyDataSetChanged()
                 mPull2RefreshLayout!!.finishRefresh(true)
                 mPull2RefreshLayout!!.finishLoadmore(true)
