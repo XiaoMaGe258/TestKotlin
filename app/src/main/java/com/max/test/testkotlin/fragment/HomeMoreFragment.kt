@@ -20,8 +20,10 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.max.test.testkotlin.R
 import com.max.test.testkotlin.R.id.cv_calendar
+import com.max.test.testkotlin.entity.MContent
 import com.max.test.testkotlin.libs.captcha.RxCaptchaActivity
 import com.max.test.testkotlin.ui.RotateImageActivity
+import com.max.test.testkotlin.utils.MUtils
 import com.max.test.testkotlin.utils.MyToast
 import com.max.test.testkotlin.utils.SignSelectorDecorator
 import com.max.test.testkotlin.utils.SignedSelectorDecorator
@@ -51,6 +53,12 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_home_more, null)
+        initView(v)
+        initCalendarDate()
+        return v
+    }
+
+    private fun initView(v: View){
         mImgView = v.iv_avatar
         mImgView!!.setOnClickListener(this)
         v.btn_view_image.setOnClickListener(this)
@@ -58,9 +66,9 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
         v.ib_more_item2.setOnClickListener(this)
         v.ib_more_item3.setOnClickListener(this)
         v.ib_more_item4.setOnClickListener(this)
+        v.ib_more_item5.setOnClickListener(this)
         mIBSignItem = v.ib_more_item1
-        initCalendarDate()
-        return v
+        v.ib_more_item5.hint = MContent.telephone
     }
 
     override fun onClick(v: View) {
@@ -86,6 +94,9 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
             }
             v.ib_more_item4 -> {
                 actionCaptcha()
+            }
+            v.ib_more_item5 -> {
+                MUtils.actionCall(context!!, MContent.telephone)
             }
         }
     }
