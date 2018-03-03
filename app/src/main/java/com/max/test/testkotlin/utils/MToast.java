@@ -1,10 +1,11 @@
 package com.max.test.testkotlin.utils;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.widget.Toast;
 
 /**解决多次点击，会顺序显示Toast的问题。*/
-public class MyToast {
+public class MToast {
 	
 	private static Toast mToast;
 	public static int LENGTH_LONG = Toast.LENGTH_LONG;
@@ -17,6 +18,18 @@ public class MyToast {
 	 */
 	public static void show(Context context, String text) {
 		makeText(context, text);
+	}
+
+	/**
+	 * 显示Toast
+	 * @param context
+	 * @param text
+	 */
+	public static void showWithNewLocation(Context context, String text) {
+		Toast mToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+		//起点位置,水平向右位移,垂直向下位移
+		mToast.setGravity(Gravity.CENTER, 0, 0);
+		mToast.show();
 	}
 
 	/**

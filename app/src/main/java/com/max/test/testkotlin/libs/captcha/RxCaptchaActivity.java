@@ -5,8 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -17,7 +15,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.max.test.testkotlin.R;
 import com.max.test.testkotlin.ui.BaseActivity;
-import com.max.test.testkotlin.utils.MyToast;
+import com.max.test.testkotlin.utils.MToast;
 
 public class RxCaptchaActivity extends BaseActivity implements View.OnClickListener {
 
@@ -41,13 +39,13 @@ public class RxCaptchaActivity extends BaseActivity implements View.OnClickListe
         mRxSwipeCaptcha.setOnCaptchaMatchCallback(new RxSwipeCaptcha.OnCaptchaMatchCallback() {
             @Override
             public void matchSuccess(RxSwipeCaptcha rxSwipeCaptcha) {
-                MyToast.show(RxCaptchaActivity.this, "验证通过！");
+                MToast.show(RxCaptchaActivity.this, "验证通过！");
                 mSeekBar.setEnabled(false);
             }
 
             @Override
             public void matchFailed(RxSwipeCaptcha rxSwipeCaptcha) {
-                MyToast.show(RxCaptchaActivity.this, "验证失败:拖动滑块将悬浮头像正确拼合");
+                MToast.show(RxCaptchaActivity.this, "验证失败:拖动滑块将悬浮头像正确拼合");
                 rxSwipeCaptcha.resetCaptcha();
                 mSeekBar.setProgress(0);
             }

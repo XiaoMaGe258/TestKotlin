@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -19,12 +18,11 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.max.test.testkotlin.R
-import com.max.test.testkotlin.R.id.cv_calendar
 import com.max.test.testkotlin.entity.MContent
 import com.max.test.testkotlin.libs.captcha.RxCaptchaActivity
 import com.max.test.testkotlin.ui.RotateImageActivity
 import com.max.test.testkotlin.utils.MUtils
-import com.max.test.testkotlin.utils.MyToast
+import com.max.test.testkotlin.utils.MToast
 import com.max.test.testkotlin.utils.SignSelectorDecorator
 import com.max.test.testkotlin.utils.SignedSelectorDecorator
 import com.max.test.testkotlin.view.ItemBar
@@ -77,7 +75,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
                 selectPicture(false, false)
             v.btn_view_image -> {
                 if (mPicPath == null) {
-                    Toast.makeText(context, "先选择图片", Toast.LENGTH_SHORT).show()
+                    MToast.show(context, "先选择图片")
                     return
                 } else {
                     rotateImage()
@@ -87,10 +85,10 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
                 showWorkDateDatePicker()
             }
             v.ib_more_item2 -> {
-                MyToast.show(context, "别想了，不可能的")
+                MToast.show(context, "别想了，不可能的")
             }
             v.ib_more_item3 -> {
-                MyToast.show(context, "净想美事呢")
+                MToast.show(context, "净想美事呢")
             }
             v.ib_more_item4 -> {
                 actionCaptcha()
@@ -211,7 +209,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
     private fun initCalendarDate() {
         mDecorator = SignSelectorDecorator(activity)
         mDialogView = LayoutInflater.from(context).inflate(R.layout.calendar_dialog_layout, null)
-        mCalendarView = mDialogView!!.findViewById(cv_calendar)
+        mCalendarView = mDialogView!!.findViewById(R.id.cv_calendar)
         mCalendarView!!.setTitleFormatter { day ->
             val dateFormat = SimpleDateFormat("yyyy年MM月", Locale.getDefault())
             dateFormat.format(day.date)

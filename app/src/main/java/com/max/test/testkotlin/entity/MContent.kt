@@ -1,12 +1,15 @@
 package com.max.test.testkotlin.entity
 
 /**
- * Created by Administrator on 2018-3-3.
+ * MContent 用 object修饰，相当于单例
+ * 这里把类声明时的class关键字改成了object，这个类里面的成员默认都是static的.
  */
-class MContent {
+object MContent {
 
-    companion object {
-        //静态属性
-        val telephone: String = "13888888888"
+    //静态属性
+    val telephone: String = "13888888888"
+
+    fun getTel(): String{
+        return telephone
     }
 }

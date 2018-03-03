@@ -10,27 +10,26 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.max.test.testkotlin.R
-import com.youth.banner.loader.ImageLoader
-import kotlinx.android.synthetic.main.fragment_home_message.view.*
-import kotlin.collections.ArrayList
-import android.support.v7.widget.RecyclerView
-import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.max.test.testkotlin.ui.RotateImageActivity
+import com.chad.library.adapter.base.BaseViewHolder
+import com.max.test.testkotlin.R
 import com.max.test.testkotlin.ui.WebViewActivity
 import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
+import com.youth.banner.loader.ImageLoader
+import kotlinx.android.synthetic.main.fragment_home_message.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener, BaseQuickAdapter.OnItemClickListener {
