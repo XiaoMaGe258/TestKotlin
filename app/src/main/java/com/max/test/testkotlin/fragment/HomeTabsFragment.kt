@@ -33,7 +33,7 @@ class HomeTabsFragment : Fragment() {
     private fun initData(v: View){
 
         for (title in mTitles) {
-            mFragments.add(SimpleCardFragment.getInstance(title))
+            mFragments.add(TabListFragment.getInstance())
         }
 
         v.vp_tab_item_pager.adapter = MyPagerAdapter(childFragmentManager)
