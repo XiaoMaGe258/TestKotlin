@@ -18,14 +18,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainTabActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".ui.RotateImageActivity" />
+        <activity android:name=".ui.WebViewActivity" />
+        <activity android:name=".libs.captcha.RxCaptchaActivity" />
+        <activity android:name=".ui.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".ui.RotateImageActivity" />
-        <activity android:name=".ui.WebViewActivity" />
+        <activity android:name=".ui.BaseActivity" />
     </application>
 
 </manifest>

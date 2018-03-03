@@ -14,10 +14,11 @@ import com.max.test.testkotlin.fragment.HomeContactsFragment
 import com.max.test.testkotlin.fragment.HomeMessageFragment
 import com.max.test.testkotlin.fragment.HomeMoreFragment
 import com.max.test.testkotlin.fragment.HomeTabsFragment
+import com.max.test.testkotlin.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import java.util.*
 
-class MainTabActivity : AppCompatActivity() {
+class MainTabActivity : BaseActivity() {
 
     private val mTitles = arrayOf("首页", "消息", "联系人", "更多")//
     private val mIconUnSelectIds = intArrayOf(
@@ -33,6 +34,14 @@ class MainTabActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_tab)
+        initView()
+        initTab()
+
+    }
+
+    private fun initView(){
+        setTitle("神奇的Kotlin")
+        hintBackFlag()
         for (i in mTitles.indices) {
             mTabEntities.add(TabEntity(mTitles[i], mIconSelectIds[i], mIconUnSelectIds[i]))
         }
@@ -44,9 +53,6 @@ class MainTabActivity : AppCompatActivity() {
 
         vp_view_pager.offscreenPageLimit = 3
         vp_view_pager.adapter = MyPagerAdapter(supportFragmentManager)
-
-        initTab()
-
     }
 
     private fun initTab() {

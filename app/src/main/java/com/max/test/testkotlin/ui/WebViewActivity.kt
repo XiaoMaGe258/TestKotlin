@@ -11,7 +11,7 @@ import android.webkit.*
 /**
  * Created by Max on 2018-2-28.
  */
-class WebViewActivity: AppCompatActivity() {
+class WebViewActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +20,7 @@ class WebViewActivity: AppCompatActivity() {
     }
 
     private fun initView(url: String){
+        setTitle("这是一个网页")
         val webSettings = wv_web.settings
         webSettings.javaScriptEnabled = true
         webSettings.setSupportZoom(false)

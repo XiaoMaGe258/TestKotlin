@@ -30,7 +30,7 @@ import java.io.FileOutputStream;
  * Created by Max on 2017-7-31.
  */
 
-public class RotateImageActivity extends AppCompatActivity implements View.OnClickListener {
+public class RotateImageActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mIvBigImage;
     private Button mBtnRotate;

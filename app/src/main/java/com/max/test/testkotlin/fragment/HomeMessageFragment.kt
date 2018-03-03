@@ -156,7 +156,7 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener, B
         constructor(context: Context, colorId: Int, dividerHeight: Int) {
             //自定义分割线高度，颜色
             this.dividerPaint = Paint()
-            this.dividerPaint!!.color = context.resources.getColor(colorId)
+            this.dividerPaint!!.color = colorId
             this.dividerHeight = dip2px(context, dividerHeight.toFloat())
         }
 

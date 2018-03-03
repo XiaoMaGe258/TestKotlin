@@ -20,6 +20,7 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.max.test.testkotlin.R
 import com.max.test.testkotlin.R.id.cv_calendar
+import com.max.test.testkotlin.libs.captcha.RxCaptchaActivity
 import com.max.test.testkotlin.ui.RotateImageActivity
 import com.max.test.testkotlin.utils.MyToast
 import com.max.test.testkotlin.utils.SignSelectorDecorator
@@ -56,6 +57,7 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
         v.ib_more_item1.setOnClickListener(this)
         v.ib_more_item2.setOnClickListener(this)
         v.ib_more_item3.setOnClickListener(this)
+        v.ib_more_item4.setOnClickListener(this)
         mIBSignItem = v.ib_more_item1
         initCalendarDate()
         return v
@@ -82,6 +84,9 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
             v.ib_more_item3 -> {
                 MyToast.show(context, "净想美事呢")
             }
+            v.ib_more_item4 -> {
+                actionCaptcha()
+            }
         }
     }
 
@@ -89,6 +94,11 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
         val intent = Intent(activity, RotateImageActivity::class.java)
         intent.putExtra("imageUrl", mPicPath)
         startActivityForResult(intent, RotateImageActivity.RequestCode)
+    }
+
+    private fun actionCaptcha() {
+        val intent = Intent(activity, RxCaptchaActivity::class.java)
+        startActivity(intent)
     }
 
     private fun selectPicture(enableCrop: Boolean, enableMultiple: Boolean) {
@@ -251,11 +261,11 @@ class HomeMoreFragment : Fragment(), View.OnClickListener, SweetAlertDialog.OnSw
         when(sweetAlertDialog!!.alerType){
             SweetAlertDialog.SUCCESS_TYPE -> {
                 mCalendarDialog!!.dismiss()
-                sweetAlertDialog!!.dismissWithAnimation()
+                sweetAlertDialog.dismissWithAnimation()
                 mIBSignItem!!.setHint("今天已经签到", Color.parseColor("#999999"))
             }
             SweetAlertDialog.WARNING_TYPE -> {
-                sweetAlertDialog!!.dismiss()
+                sweetAlertDialog.dismiss()
             }
         }
 

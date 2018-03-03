@@ -10,4 +10,10 @@
         <attr name="itemIcon" format="reference" />
         <attr name="showRightFlag" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="RxSwipeCaptcha">
+        <attr name="captchaWidth" format="dimension"/>
+        <attr name="captchaHeight" format="dimension"/>
+        <attr name="matchDeviation" format="dimension"/>
+    </declare-styleable>
 </resources>

@@ -87,5 +87,19 @@
             android:layout_height="0.5dp"
             android:background="#cccccc"
             />
+
+        <com.max.test.testkotlin.view.ItemBar
+            android:id="@+id/ib_more_item4"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:itemHint=""
+            app:itemIcon="@drawable/ic_yzm"
+            app:itemTitle="滑块验证码" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#cccccc"
+            />
     </LinearLayout>
 </RelativeLayout>
