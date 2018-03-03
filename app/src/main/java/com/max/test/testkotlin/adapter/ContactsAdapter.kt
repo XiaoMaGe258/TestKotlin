@@ -21,7 +21,11 @@ class ContactsAdapter(contacts: ArrayList<Contact>, private var layoutId: Int):
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ContactsViewHolder {
         val view = LayoutInflater.from(parent!!.context).inflate(layoutId, null)
-        return ContactsViewHolder(view)
+        val holder = ContactsViewHolder(view)
+        holder.layout!!.setOnClickListener {
+            listener!!.onItemClick(view)
+        }
+        return holder
     }
 
     override fun getItemCount(): Int {
@@ -50,13 +54,21 @@ class ContactsAdapter(contacts: ArrayList<Contact>, private var layoutId: Int):
         var tvIndex: TextView? = null
         var ivAvatar: ImageView? = null
         var tvName: TextView? = null
+        var layout: ViewGroup? = null
 
         init {
             tvIndex = itemView.findViewById(R.id.tv_index)
             ivAvatar = itemView.findViewById(R.id.iv_avatar)
             tvName = itemView.findViewById(R.id.tv_name)
+            layout = itemView.findViewById(R.id.item_layout)
         }
-
     }
 
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        listener = onItemClickListener
+    }
+    private var listener: OnItemClickListener? = null
+    interface OnItemClickListener {
+        fun onItemClick(view: View)
+    }
 }

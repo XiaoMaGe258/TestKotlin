@@ -3,7 +3,9 @@ package com.max.test.testkotlin.fragment;
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.gjiazhe.wavesidebar.WaveSideBar
@@ -11,12 +13,14 @@ import com.max.test.testkotlin.R
 import com.max.test.testkotlin.adapter.ContactsAdapter
 import com.max.test.testkotlin.entity.Contact
 import com.max.test.testkotlin.utils.ContactsComparator
+import com.max.test.testkotlin.utils.MUtils
 import kotlinx.android.synthetic.main.fragment_home_contacts.view.*
 import java.util.*
 
 class HomeContactsFragment : Fragment() {
 
     private val contacts = ArrayList<Contact>()
+    private var mAdapter: ContactsAdapter? = null
 
     companion object {
         fun getInstance(): HomeContactsFragment {
@@ -34,7 +38,13 @@ class HomeContactsFragment : Fragment() {
         contacts.addAll(Contact.getEnglishContacts())
         sortContacts()
         v.rv_contacts.layoutManager = LinearLayoutManager(context)
-        v.rv_contacts.adapter = ContactsAdapter(contacts, R.layout.item_contacts)
+        mAdapter = ContactsAdapter(contacts, R.layout.item_contacts)
+        v.rv_contacts.adapter = mAdapter
+        mAdapter!!.setOnItemClickListener(object : ContactsAdapter.OnItemClickListener{
+            override fun onItemClick(view: View) {
+                MUtils.actionCall(context!!,  "12345678901")
+            }
+        })
         v.side_bar.setOnSelectIndexItemListener(WaveSideBar.OnSelectIndexItemListener { index ->
             for (i in contacts.indices) {
                 if (contacts[i].index == index) {

@@ -74,13 +74,14 @@ class HomeMessageFragment : Fragment(), OnRefreshListener, OnLoadmoreListener, B
         mRefreshLayout = v.srl_refresh_layout
         v.srl_refresh_layout.refreshHeader = MaterialHeader(context)
         v.srl_refresh_layout.refreshFooter = ClassicsFooter(context)
-        v.srl_refresh_layout.setEnableHeaderTranslationContent(false)
         v.srl_refresh_layout.isEnableOverScrollBounce = false
+        v.srl_refresh_layout.setEnableHeaderTranslationContent(false)
         v.srl_refresh_layout.setOnRefreshListener(this)
         v.srl_refresh_layout.setOnLoadmoreListener(this)
 
         v.rv_list.isNestedScrollingEnabled = false//用NestedScrollView替代ScrollView，解决滑动黏连问题
         v.rv_list.layoutManager = LinearLayoutManager(context)
+        v.rv_list.isFocusable = false//解决刷新后，自动跳到表头位置的问题
         v.rv_list.addItemDecoration(MySimpleDivider(context!!))
         mAdapter = HomeAdapter(R.layout.item_message, mListItems)
         //设置动画
