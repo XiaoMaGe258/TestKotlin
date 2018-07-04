@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +25,8 @@ public class RxCaptchaActivity extends BaseActivity implements View.OnClickListe
     SeekBar mSeekBar;
     Button mBtnChange;
 
+    ImageView mVerifyCode;
+    Button mBtnCreate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,9 @@ public class RxCaptchaActivity extends BaseActivity implements View.OnClickListe
         mSeekBar = findViewById(R.id.sb_seek_bar);
         mBtnChange = findViewById(R.id.btn_change);
         mBtnChange.setOnClickListener(this);
+        mVerifyCode = findViewById(R.id.iv_verify_img);
+        mBtnCreate = findViewById(R.id.btn_create_verify);
+        mBtnCreate.setOnClickListener(this);
         mRxSwipeCaptcha.setOnCaptchaMatchCallback(new RxSwipeCaptcha.OnCaptchaMatchCallback() {
             @Override
             public void matchSuccess(RxSwipeCaptcha rxSwipeCaptcha) {
@@ -71,7 +78,7 @@ public class RxCaptchaActivity extends BaseActivity implements View.OnClickListe
 
         //测试从网络加载图片是否ok
         RequestOptions options = new RequestOptions();
-        Glide.with(this).load(R.drawable.douyu).apply(options).into(new SimpleTarget<Drawable>() {
+        Glide.with(this).load(R.drawable.new_image).apply(options).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 mRxSwipeCaptcha.setImageBitmap(((BitmapDrawable)resource).getBitmap());
@@ -87,6 +94,12 @@ public class RxCaptchaActivity extends BaseActivity implements View.OnClickListe
             mRxSwipeCaptcha.createCaptcha();
             mSeekBar.setEnabled(true);
             mSeekBar.setProgress(0);
+        }else if(v.getId() == R.id.btn_create_verify){
+            //验证码
+            RxCaptcha rxCaptcha = RxCaptcha.getInstance(RxCaptcha.TYPE.CHARS).lineNumber(5);
+            rxCaptcha.into(mVerifyCode);
+            String code = rxCaptcha.getCode();
+            Log.d("xmg", "code="+code);
         }
     }
 }
